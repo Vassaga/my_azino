@@ -19,7 +19,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-STATIC_URL = "static/"
 
 DJANGO_APPS = [
     'django.contrib.admin',
@@ -105,3 +104,5 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'auths.MyUser'

@@ -7,7 +7,45 @@ import datetime
 from django.core.validators import MinValueValidator, RegexValidator
 
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+
+
+class MyUserManager(BaseUserManager):
+    """ClientManager."""
+
+    def create_user(
+        self,
+        email: str,
+        password: str
+    ) -> 'CustomUser':
+
+        if not email:
+            raise ValidationError('Email required')
+
+        custom_user: 'CustomUser' = self.model(
+            email=self.normalize_email(email),
+            password=password
+        )
+        custom_user.set_password(password)
+        custom_user.save(using=self._db)
+        return custom_user
+
+    def create_superuser(
+        self,
+        email: str,
+        password: str
+    ) -> 'CustomUser':
+
+        custom_user: 'CustomUser' = self.model(
+            email=self.normalize_email(email),
+            password=password
+        )
+        custom_user.is_superuser = True
+        custom_user.is_active = True
+        custom_user.is_staff = True
+        custom_user.set_password(password)
+        custom_user.save(using=self._db)
+        return
 
 
 class MyUser(AbstractBaseUser, PermissionsMixin):
@@ -33,6 +71,11 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         choices=Currencies.choices,
         default=Currencies.TENGE
     )
+    
+    is_staff = models.BooleanField(
+        default=False
+    )
+    objects = MyUserManager()
 
     @property
     def balance(self) -> float:

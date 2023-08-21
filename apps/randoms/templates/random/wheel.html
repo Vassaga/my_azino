@@ -6,6 +6,16 @@
     <title>WHEEL</title>
 </head>
 <body>
+    {% extends "random/base.html" %}
+    {% block content %}
+    <br>
+    <hr>
+    <br>
     <h1>КРУТИМ КОЛЕСО!!! ВЫПАДАЕТ: {{ random_number }}</h1>
+    <br>
+    <hr>
+    <br>
+    {% endblock content %}
 </body>
 </html>
+

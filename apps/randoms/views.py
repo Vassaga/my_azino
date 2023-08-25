@@ -7,7 +7,7 @@ from django.views import View
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
 
-
+from .models import Banner
 
 
 class RandomView(View):
@@ -15,17 +15,28 @@ class RandomView(View):
 
     def get(self, request):
         random_number = random.randint(-100, 100)
-        context = {
-            'random_number': random_number
-        }
+        context = {'random_number': random_number,}
         return render(
             template_name='random/wheel.html',
             request=request,
             context = context
         )
+    
 
 def slot_mashine(request):
     return render(
         template_name='random/slot_mashine.html',
         request=request
     )
+
+
+class BaseView(View):
+    def base(self, request):
+        active_banners = Banner.objects.filter(is_active=True)
+        context = {'active_banners': active_banners}
+        return render(
+            template_name='random/base.html',
+            request=request,
+            context = context
+        )
+    

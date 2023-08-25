@@ -7,9 +7,11 @@
   .text {text-align:  center;}
  </style>
 <header>
-  <div class="ad">
-    <a href="https://rb.ru/opinion/bannernaya-reklama/" class="reclama"><img src="/static/images/baner3.jpeg" alt="Landing Page"/></a>
-  </div>
+  <div>
+      {% for banner in active_banners %}
+          <a href="https://rb.ru/opinion/bannernaya-reklama/" class="reclama"><img src="{{banner.banner_file.url}}" alt="{{ banner.name }} banner" /></a>
+      {% endfor %}
+    </div>
   <hr>
   <br>
     <a href="/">Home</a> | <a href="/random/wheel">WHEEL</a> | <a href="/random/slot_mashine">SLOT_MASHINE</a>
@@ -26,8 +28,10 @@
 
 {% block content %} {% endblock content %}
 <footer>
-  <div class="ad">
-    <a href="https://rb.ru/opinion/bannernaya-reklama/" class="reclama"><img src="\static\images\baner3.jpeg" alt="Landing Page" /></a>
+  <div>
+    {% for banner in active_banners %}
+        <a href="https://rb.ru/opinion/bannernaya-reklama/" class="reclama"><img src="{{banner.banner_file.url}}" alt="{{ banner.name }} banner" /></a>
+    {% endfor %}
   </div>
       <hr>
     <h2>© 2023 LomovVladislavProduction</h2>

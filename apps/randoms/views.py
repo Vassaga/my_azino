@@ -15,7 +15,9 @@ class RandomView(View):
 
     def get(self, request):
         random_number = random.randint(-100, 100)
-        context = {'random_number': random_number,}
+        active_banners = Banner.objects.filter(is_active=True)
+        context = {'random_number': random_number,
+                   'active_banners': active_banners}
         return render(
             template_name='random/wheel.html',
             request=request,
@@ -24,14 +26,17 @@ class RandomView(View):
     
 
 def slot_mashine(request):
+    active_banners = Banner.objects.filter(is_active=True)
+    context = {'active_banners': active_banners}
     return render(
         template_name='random/slot_mashine.html',
-        request=request
+        request=request,
+        context = context
     )
 
 
 class BaseView(View):
-    def base(self, request):
+    def get(self, request):
         active_banners = Banner.objects.filter(is_active=True)
         context = {'active_banners': active_banners}
         return render(
@@ -40,3 +45,11 @@ class BaseView(View):
             context = context
         )
     
+def base(request):
+    active_banners = Banner.objects.filter(is_active=True)
+    context = {'active_banners': active_banners}
+    return render(
+        template_name='random/slot_mashine.html',
+        request=request,
+        context = context
+    )

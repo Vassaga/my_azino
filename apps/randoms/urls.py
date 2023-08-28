@@ -5,13 +5,15 @@
 from django.contrib import admin
 from django.urls import path
 
-from randoms.views import RandomView, slot_mashine, BaseView
+from randoms.views import RandomView, slot_mashine, BaseView, base
 
 urlpatterns = [
     
     path('slot_mashine/', slot_mashine),
     path('wheel/', RandomView.as_view(), name='random'),
-    path('', BaseView.as_view())
+    path('slot_mashine/', slot_mashine),
+    # path('base/', BaseView.as_view()),
+    path('', base),
     
     # path('', RandomView.as_view(), name='random'),
 ]

@@ -5,9 +5,10 @@
 import datetime
 
 from django.core.validators import MinValueValidator, RegexValidator
-
+from django.forms import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.db.models.query import QuerySet
 
 
 class MyUserManager(BaseUserManager):
@@ -17,12 +18,12 @@ class MyUserManager(BaseUserManager):
         self,
         email: str,
         password: str
-    ) -> 'CustomUser':
+    ) -> 'MyUser':
 
         if not email:
             raise ValidationError('Email required')
 
-        custom_user: 'CustomUser' = self.model(
+        custom_user: 'MyUser' = self.model(
             email=self.normalize_email(email),
             password=password
         )
@@ -34,9 +35,9 @@ class MyUserManager(BaseUserManager):
         self,
         email: str,
         password: str
-    ) -> 'CustomUser':
+    ) -> 'MyUser':
 
-        custom_user: 'CustomUser' = self.model(
+        custom_user: 'MyUser' = self.model(
             email=self.normalize_email(email),
             password=password
         )
@@ -79,7 +80,14 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     @property
     def balance(self) -> float:
-        ...
+        transactions: QuerySet[Transaction] = Transaction.objects.filter(user=self.pk)
+        result: float = 0
+        for trans in transactions:
+            if trans.is_filled:
+                result += trans.amout
+            else:
+                result -= trans.amout
+        return result
 
 
     REQUIRED_FIELDS = []

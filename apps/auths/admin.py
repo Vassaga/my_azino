@@ -1,13 +1,11 @@
 from django.contrib import admin
 
-from .models import (
-    MyUserManager,
+from auths.models.my_user import (
     MyUser,
-    ActivationCode,
-    BankCard,
-    Transaction,
-
+    Transaction
 )
+from auths.models.bank_card import BankCard
+
 
 @admin.register(MyUser)
 class MyUserAdmin(admin.ModelAdmin):
@@ -15,12 +13,3 @@ class MyUserAdmin(admin.ModelAdmin):
     list_filter = ['email', 'nickname', 'currency']
     ordering = ['email', 'nickname']
 
-@admin.register(Transaction)
-class TransactionAdmin(admin.ModelAdmin):
-    list_display = ['user', 'amout', 'datetime_created', 'is_filled']
-    list_filter = ['user', 'amout', 'datetime_created', 'is_filled']
-    ordering = ['user', 'amout']
-
-
-# admin.site.register(MyUser, MyUserAdmin)
-# admin.site.register(Transaction, TransactionAdmin)
